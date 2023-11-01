@@ -1,0 +1,187 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.8,
+        "y": 5.0
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.543301138214517,
+        "y": 4.808169697203655
+      },
+      "isLocked": false
+    },
+    {
+      "anchor": {
+        "x": 6.47,
+        "y": 4.6
+      },
+      "prevControl": {
+        "x": 6.508647826740245,
+        "y": 4.604673279920668
+      },
+      "nextControl": {
+        "x": 5.191285473480038,
+        "y": 4.445378345302146
+      },
+      "isLocked": false
+    },
+    {
+      "anchor": {
+        "x": 1.8,
+        "y": 4.427159581596417
+      },
+      "prevControl": {
+        "x": 1.5539742235378984,
+        "y": 4.4202799815018095
+      },
+      "nextControl": {
+        "x": 2.777299281867061,
+        "y": 4.454487727161799
+      },
+      "isLocked": false
+    },
+    {
+      "anchor": {
+        "x": 5.300598055737336,
+        "y": 4.427159581596417
+      },
+      "prevControl": {
+        "x": 4.9147141845445885,
+        "y": 4.508398291321206
+      },
+      "nextControl": {
+        "x": 5.8198328214795945,
+        "y": 4.317846999334889
+      },
+      "isLocked": false
+    },
+    {
+      "anchor": {
+        "x": 6.47,
+        "y": 3.780393469882375
+      },
+      "prevControl": {
+        "x": 5.801614057769339,
+        "y": 4.217643798928485
+      },
+      "nextControl": null,
+      "isLocked": false
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 2.75,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Initial Slowdown",
+      "minWaypointRelativePos": 0.5,
+      "maxWaypointRelativePos": 0.65,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3,
+        "maxAngularVelocity": 540,
+        "maxAngularAcceleration": 720
+      }
+    },
+    {
+      "name": "PieceGrab",
+      "minWaypointRelativePos": 0.65,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 3,
+        "maxAngularVelocity": 540,
+        "maxAngularAcceleration": 720
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "Score Cone High",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Score Cone High"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Floor Pickup",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Floor Pickup"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Score Cube High",
+      "waypointRelativePos": 2.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Score Cube High"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Floor Pickup",
+      "waypointRelativePos": 3.65,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Floor Pickup"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3,
+    "maxAcceleration": 3,
+    "maxAngularVelocity": 540,
+    "maxAngularAcceleration": 720
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -34.726137038884474
+  },
+  "reversed": false,
+  "folder": "3 Piece Auto",
+  "previewStartingState": null
+}

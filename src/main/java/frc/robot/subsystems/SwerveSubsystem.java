@@ -3,9 +3,15 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.configs.Pigeon2Configurator;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -14,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants.*;
+import frc.robot.commands.swerve.MoveSwerveCmd;
 
 public class SwerveSubsystem extends SubsystemBase {
 
@@ -35,6 +42,13 @@ public class SwerveSubsystem extends SubsystemBase {
     
     public SwerveDriveOdometry swerveDriveOdometry;
 
+    /* --------------------> Swerve Drive Kinematics <-------------------- */
+    public final SwerveDriveKinematics kSwerveDriveKinematics = new SwerveDriveKinematics(
+            new Translation2d(DriveConstants.kTrackWidth / 2, DriveConstants.kWheelBase / 2), // Front Left
+            new Translation2d(-DriveConstants.kTrackWidth / 2, DriveConstants.kWheelBase / 2), // Front Right
+            new Translation2d(DriveConstants.kTrackWidth / 2, -DriveConstants.kWheelBase / 2), // Back Left
+            new Translation2d(-DriveConstants.kTrackWidth / 2, -DriveConstants.kWheelBase / 2)); // Back Right
+
     public SwerveSubsystem() {
 
         /* --------------------> Swerve Drive Constructor <-------------------- */
@@ -42,9 +56,26 @@ public class SwerveSubsystem extends SubsystemBase {
         configGyro(gyro);
         gyro.setYaw(0);
 
-        swerveDriveOdometry = new SwerveDriveOdometry(DriveConstants.kSwerveDriveKinematics, getRotation2d(), getModulePositions());
+        swerveDriveOdometry = new SwerveDriveOdometry(kSwerveDriveKinematics, getRotation2d(), getModulePositions());
 
         resetModuleEncoders();
+
+        // Leave Commented Until Future Use, PathPlanner Stuff
+        /*
+        AutoBuilder.configureHolonomic(
+            this::getPose, 
+            this::resetPose, 
+            this::getChassisSpeeds,
+            this::drive,
+            new HolonomicPathFollowerConfig(
+                new PIDConstants(5.0, 0, 0),
+                new PIDConstants(5.0, 0, 0), 
+                4.5, 0.4, 
+                new ReplanningConfig(true, true)
+            ),
+            this
+        );
+        */
 
     }
 
@@ -91,6 +122,16 @@ public class SwerveSubsystem extends SubsystemBase {
     /* --------------------> Get Robot Pose <-------------------- */
     public Pose2d getPose() {
         return swerveDriveOdometry.getPoseMeters();
+    }
+
+    /* --------------------> Reset Robot Pose Using Robot Rotation <-------------------- */
+    public void resetPose(Pose2d pose) {
+        swerveDriveOdometry.resetPosition(getRotation2d(), getModulePositions(), pose);
+    }
+
+    /* --------------------> Reset Robot Pose Using Custom Rotation <-------------------- */
+    public void resetPose(Pose2d pose, Rotation2d rotation) {
+        swerveDriveOdometry.resetPosition(rotation, getModulePositions(), pose);
     }
 
     /* --------------------> Stop Swerve Modules <-------------------- */
